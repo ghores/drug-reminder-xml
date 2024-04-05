@@ -1,11 +1,17 @@
 package com.example.yadavaredaroo;
 
 import android.Manifest;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.yadavaredaroo.services.AlarmService;
+import com.example.yadavaredaroo.services.InjectionService;
+import com.example.yadavaredaroo.services.UpdateService;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -15,6 +21,7 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.single.PermissionListener;
 
+import java.util.Calendar;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,5 +62,23 @@ public class MainActivity extends AppCompatActivity {
                         Log.i(TAG, "onPermissionRationaleShouldBeShown: ");
                     }
                 }).check();
+        Intent intent = new Intent(getApplicationContext(), UpdateService.class);
+        startService(intent);
+
+        AlarmManager alarmManager1 = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent1 = new Intent(this, AlarmService.class);
+        PendingIntent pendingIntent1 = PendingIntent.getBroadcast(this, 1, intent1, PendingIntent.FLAG_IMMUTABLE);
+        alarmManager1.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 6000 * 10, pendingIntent1);
+
+        //================================================================
+        AlarmManager alarmManager2 = (AlarmManager) getSystemService(ALARM_SERVICE);
+        Intent intent2 = new Intent(this, InjectionService.class);
+        PendingIntent pendingIntent2 = PendingIntent.getBroadcast(this, 1, intent2, PendingIntent.FLAG_IMMUTABLE);
+        alarmManager1.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 6000 * 10, pendingIntent2);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.MINUTE, 14);
+        calendar.set(Calendar.HOUR_OF_DAY, 3);
+        alarmManager2.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent2);
     }
 }

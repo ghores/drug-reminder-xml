@@ -9,6 +9,7 @@
         android:name="android.hardware.camera"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.SEND_SMS" />
@@ -25,6 +26,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.YadAvareDaroo"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"
@@ -53,6 +55,12 @@
             </intent-filter>
 
         </receiver>
+
+        <service android:name=".services.UpdateService" />
+
+        <receiver android:name=".services.AlarmService" />
+        <receiver android:name=".services.InjectionService" />
+
     </application>
 
 </manifest>
